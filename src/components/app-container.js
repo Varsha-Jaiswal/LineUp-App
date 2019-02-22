@@ -4,17 +4,21 @@ import AddToDo from './add_todo';
 import ToDosList from './todos_list';
 
 import uuid from "uuid";
+import {observable, action} from "mobx";
+
+
 class AppContainer extends Component {
-  state = {
+  state = observable({
     todos: [],
     selectedFilter: "all"
-  };
-  handleChange =  e => {
+  });
+    
+  handleChange =  action(e => {
     this.setState({
       todo: e.target.value
     });
-  }
-  handleSubmit = e => {
+  })
+  handleSubmit = action(e => {
     e.preventDefault();
     if(this.state.todo.length > 0) {
       const newTodo = {
@@ -28,22 +32,22 @@ class AppContainer extends Component {
         todo: ''
       });
     }
-  };
-  clearList = (id) => {
+  });
+  clearList = action((id) => {
     const currentFilter =id.target;
     if (currentFilter.id === "clear list") {
       this.setState({
         todos: []
       });
     }
-  };
-  clearTodo = (id) => {
+  });
+  clearTodo = action((id) => {
     const updatedList = this.state.todos.filter(todo => todo.id !== id)
     this.setState({
       todos:updatedList
     })
-  };
-  changeFilter = (id) => {
+  });
+  changeFilter = action((id) => {
     const currentFilter =id.target;
     if (currentFilter.id === "all") {
       this.setState({
@@ -67,8 +71,8 @@ class AppContainer extends Component {
         todos: newList
       });
     }
-  };
-  handleCheck = (todo) => {
+  });
+  handleCheck = action((todo) => {
     if(todo.completed===false) {
       todo.completed = true;
     }
@@ -84,8 +88,8 @@ class AppContainer extends Component {
     this.setState({
       todos:updatedTodos
     });
-  };
-  
+  });
+
   render() {
     return (
       <div className="container">
